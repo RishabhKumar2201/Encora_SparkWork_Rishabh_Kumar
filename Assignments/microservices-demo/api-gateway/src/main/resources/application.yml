@@ -1,0 +1,26 @@
+server:
+  port: 8080 # The API Gateway will run on port 8080
+
+spring:
+  application:
+    name: api-gateway # Name for service discovery
+  cloud:
+    gateway:
+      routes:
+        - id: product-service # A unique ID for this route
+          uri: lb://product-service # 'lb' means load balance to the service named 'product-service'
+          predicates:
+            - Path=/api/products/** # Forward any request starting with /api/products to the product-service
+
+        # You will add more routes here later for order-service, user-service, etc.
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/orders/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ # Register with the Eureka server
+  instance:
+    prefer-ip-address: true

@@ -1,0 +1,43 @@
+server:
+  port: 8082 # Give it a unique port
+
+spring:
+  application:
+    name: product-service # Name for service discovery
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  h2:
+    console:
+      enabled: true # Enable H2 console for debugging at /h2-console
+  kafka: 
+    bootstrap-servers: localhost:9092 
+    consumer: 
+      group-id: hello-group2 
+      auto-offset-reset: earliest 
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+# Register with Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# Optional: Add some logging to see requests
+logging:
+  level:
+    com.example.productservice: DEBUG
